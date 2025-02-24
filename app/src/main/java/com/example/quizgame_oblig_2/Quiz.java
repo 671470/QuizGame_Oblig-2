@@ -1,17 +1,35 @@
 package com.example.quizgame_oblig_2;
 
-public class QuizModel {
+
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "quizzes")
+public class Quiz {
+
+
+
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name ="quizId")
+    private int id;
 
     private String picture;
     private String rightAnswer, altAnswer1, altAnswer2;
 
-    public QuizModel(String picture, String rightAnswer, String altAnswer1, String altAnswer2){
+    public Quiz(String picture, String rightAnswer, String altAnswer1, String altAnswer2){
         this.picture = picture;
         this.rightAnswer = rightAnswer;
         this.altAnswer1 = altAnswer1;
         this.altAnswer2 = altAnswer2;
     }
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
     public String getPicture() {
         return picture;
     }

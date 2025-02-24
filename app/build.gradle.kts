@@ -6,6 +6,10 @@ android {
     namespace = "com.example.quizgame_oblig_2"
     compileSdk = 35
 
+    buildFeatures{
+        viewBinding = true
+    }
+
     defaultConfig {
         applicationId = "com.example.quizgame_oblig_2"
         minSdk = 24
@@ -35,6 +39,7 @@ dependencies {
 
 
     implementation(libs.room.runtime)
+    implementation(libs.room.common)
     annotationProcessor(libs.room.compiler)
     implementation(libs.appcompat)
     implementation(libs.material)
