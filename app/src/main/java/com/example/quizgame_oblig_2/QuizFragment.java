@@ -3,6 +3,7 @@ package com.example.quizgame_oblig_2;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,6 +54,8 @@ public class QuizFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        QuizViewModel model = new QuizViewModel(getUi);
+
     }
 
     @Override

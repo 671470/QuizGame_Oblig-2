@@ -2,6 +2,7 @@ package com.example.quizgame_oblig_2;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Insert;
 import androidx.room.Query;
 
 import java.util.List;
@@ -9,5 +10,10 @@ import java.util.List;
 public interface QuizDao {
     @Query("SELECT * FROM quizzes")
     LiveData<List<Quiz>>getAllQuizzes();
+
+    @Insert
+    void insertQuiz(Quiz quiz);
+
+
 
 }

@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.quizgame_oblig_2.databinding.ActivityMainBinding;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
+
         setContentView(view);
         ViewCompat.setOnApplyWindowInsetsListener(binding.main, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
         viewModel = new ViewModelProvider(this).get(QuizViewModel.class);
+
 
     }
 }
