@@ -1,64 +1,63 @@
 package com.example.quizgame_oblig_2;
 
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "quizzes")
+@Entity(tableName = "quiz_table")
 public class Quiz {
 
 
 
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name ="quizId")
-    private int id;
-
+    @PrimaryKey
+    @NonNull
+    @ColumnInfo(name = "picture")
     private String picture;
-    private String rightAnswer, altAnswer1, altAnswer2;
+    @ColumnInfo(name = "right_answer")
+    private String rightAnswer;
+    @ColumnInfo(name = "alt_answer_1")
+    private String altAnswer1;
+    @ColumnInfo(name = "alt_answer_2")
+    private String altAnswer2;
 
-    public Quiz(String picture, String rightAnswer, String altAnswer1, String altAnswer2){
+    public Quiz(@NonNull String picture, String rightAnswer, String altAnswer1, String altAnswer2){
         this.picture = picture;
         this.rightAnswer = rightAnswer;
         this.altAnswer1 = altAnswer1;
         this.altAnswer2 = altAnswer2;
     }
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-    public String getPicture() {
-        return picture;
-    }
-
-    public void setPicture(String picture) {
+    public void setPicture(@NonNull String picture) {
         this.picture = picture;
-    }
-
-    public String getRightAnswer() {
-        return rightAnswer;
     }
 
     public void setRightAnswer(String rightAnswer) {
         this.rightAnswer = rightAnswer;
     }
 
-    public String getAltAnswer1() {
-        return altAnswer1;
-    }
-
     public void setAltAnswer1(String altAnswer1) {
         this.altAnswer1 = altAnswer1;
     }
 
-    public String getAltAnswer2() {
-        return altAnswer2;
-    }
-
     public void setAltAnswer2(String altAnswer2) {
         this.altAnswer2 = altAnswer2;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public String getRightAnswer() {
+        return rightAnswer;
+    }
+
+    public String getAltAnswer1() {
+        return altAnswer1;
+    }
+
+    public String getAltAnswer2() {
+        return altAnswer2;
     }
 }

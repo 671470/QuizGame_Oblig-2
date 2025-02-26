@@ -24,6 +24,7 @@
         <activity android:name=".QuizActivity"
             android:exported="true"
             />
+
     </application>
 
 </manifest>

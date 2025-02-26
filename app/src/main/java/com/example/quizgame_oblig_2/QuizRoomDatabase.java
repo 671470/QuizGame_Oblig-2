@@ -19,10 +19,12 @@ public abstract class QuizRoomDatabase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(
                             context.getApplicationContext(),
                             QuizRoomDatabase.class, "quiz_database"
-                    ).build();
+                    ).fallbackToDestructiveMigration()
+                            .build();
                 }
             }
         }
+
         return INSTANCE;
     }
 

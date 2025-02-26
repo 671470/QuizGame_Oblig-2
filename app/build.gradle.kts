@@ -38,9 +38,15 @@ android {
 dependencies {
 
 
+    // ViewModel
+    implementation(libs.lifecycle.viewmodel)
+    // LiveData
+    implementation(libs.lifecycle.livedata)
+    // Room
     implementation(libs.room.runtime)
-    implementation(libs.room.common)
     annotationProcessor(libs.room.compiler)
+    implementation(libs.room.common)
+    
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
