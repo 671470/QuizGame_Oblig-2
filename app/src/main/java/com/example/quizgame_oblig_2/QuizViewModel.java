@@ -6,44 +6,75 @@ import android.net.Uri;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
+import java.util.Collections;
 import java.util.List;
 
 public class QuizViewModel extends AndroidViewModel {
 
     private final QuizRepository repository;
     private final LiveData<List<Quiz>> allQuizzes;
+    private MutableLiveData<List<Quiz>> gameQuiz;
 
     public QuizViewModel(Application application) {
         super(application);
         repository = new QuizRepository(application);
         allQuizzes = repository.getAllQuizzes();
-
-
+        gameQuiz = new MutableLiveData<>();
     }
-
     public void observeQuizzes(LifecycleOwner owner) {
         allQuizzes.observe(owner, new Observer<List<Quiz>>() {
             @Override
             public void onChanged(List<Quiz> quizzes) {
-                if (quizzes.isEmpty()) {
+                if (quizzes == null || quizzes.isEmpty()) {
                     startDatabase(getApplication());
+                    List<Quiz> quizTest = allQuizzes.getValue();
+                    if (quizTest != null) {
+                        Collections.shuffle(quizTest);
+                        gameQuiz.setValue(quizTest);
+                    }
+                } else {
+                    List<Quiz> quizTest = allQuizzes.getValue();
+                    if (quizTest != null) {
+                        Collections.shuffle(quizTest);
+                        gameQuiz.setValue(quizTest);
+                    }
                 }
             }
         });
+
+    }
+    public void observeGameQuiz(LifecycleOwner owner) {
+        gameQuiz.observe(owner, new Observer<List<Quiz>>() {
+            @Override
+            public void onChanged(List<Quiz> quizzes) {
+                List<Quiz> quizTest = allQuizzes.getValue();
+                if (quizTest != null) {
+                    Collections.shuffle(quizTest);
+                    gameQuiz.setValue(quizTest);}
+            }});
     }
 
-    // This method is used to get all quizzes
-    LiveData<List<Quiz>> getAllQuizzes() {
-        return allQuizzes;
+    public void startGame() {
+        List<Quiz> quizTest = allQuizzes.getValue();
+        if (quizTest != null) {
+            Collections.shuffle(quizTest);
+            gameQuiz.setValue(quizTest);
+        }
+    }
+
+    LiveData<List<Quiz>> getAllQuizzes(){return allQuizzes;}
+    LiveData<List<Quiz>> getGameQuiz() {
+        return gameQuiz;
     }
     public void deleteAllQuiz(){
         repository.deleteAllQuizzes();
     }
-    // Add the insertQuiz method to insert a new quiz
+
     public void insertQuiz(Quiz quiz) {
-        repository.insertQuiz(quiz);  // Delegate the insert operation to the repository
+        repository.insertQuiz(quiz);
     }
     public void deleteQuiz(Quiz quiz) {
         repository.deleteQuiz(quiz);

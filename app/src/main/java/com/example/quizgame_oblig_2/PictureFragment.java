@@ -14,31 +14,32 @@ import com.example.quizgame_oblig_2.databinding.FragmentQuizBinding;
 
 import java.util.List;
 
-public class QuizFragment extends Fragment {
+public class PictureFragment extends Fragment {
 
     private QuizViewModel viewModel;
     private FragmentQuizBinding binding;
 
-    public QuizFragment() {
-        // Required empty public constructor
+    public PictureFragment() {
+
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Initialize ViewModel
+
         viewModel = new ViewModelProvider(this).get(QuizViewModel.class);
+
 
         viewModel.observeQuizzes(this);
 
-        // Observing changes in the list of quizzes
-        viewModel.getAllQuizzes().observe(this, new Observer<List<Quiz>>() {
+        viewModel.getGameQuiz().observe(this, new Observer<List<Quiz>>() {
             @Override
             public void onChanged(List<Quiz> quizzes) {
-                // Check if the list is not empty
+
                 if (quizzes != null && !quizzes.isEmpty()) {
-                    // If the list is not empty, set the image
+
+
                     binding.imageView2.setImageURI(Uri.parse(quizzes.get(0).getPicture()));
                 }}
 
@@ -50,7 +51,7 @@ public class QuizFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         binding = FragmentQuizBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }

@@ -14,11 +14,7 @@ import com.example.quizgame_oblig_2.databinding.FragmentButtonsBinding;
 
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ButtonFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class ButtonFragment extends Fragment {
 
     private FragmentButtonsBinding binding;
@@ -26,7 +22,7 @@ public class ButtonFragment extends Fragment {
 
 
     public ButtonFragment() {
-        // Required empty public constructor
+
     }
 
 
@@ -37,26 +33,29 @@ public class ButtonFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(QuizViewModel.class);
 
 
+    viewModel.observeQuizzes(this);
 
-        // Observing changes in the list of quizzes
-        viewModel.getAllQuizzes().observe(this, new Observer<List<Quiz>>() {
+        viewModel.getGameQuiz().observe(this, new Observer<List<Quiz>>() {
             @Override
             public void onChanged(List<Quiz> quizzes) {
-                // Check if the list is not empty
+
                 if (quizzes != null && !quizzes.isEmpty()) {
-                    // If the list is not empty, set the image
+
                     binding.button2.setText(quizzes.get(0).getAltAnswer1());
                     binding.button3.setText(quizzes.get(0).getAltAnswer2());
                     binding.button4.setText(quizzes.get(0).getRightAnswer());
                 }}
         });
-
+//        binding.button2.setOnClickListener(v -> {
+//
+//
+//        });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         binding = FragmentButtonsBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }

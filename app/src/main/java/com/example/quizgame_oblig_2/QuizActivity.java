@@ -36,5 +36,6 @@ public class QuizActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(QuizViewModel.class);
 
 
+
     }
 }
