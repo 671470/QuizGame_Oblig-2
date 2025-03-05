@@ -1,4 +1,4 @@
-package com.example.quizgame_oblig_2;
+package com.example.quizgame_oblig_2.Activites;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,13 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.quizgame_oblig_2.databinding.ActivityMainBinding;
-import com.example.quizgame_oblig_2.databinding.ActivityQuizBinding;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,7 +31,10 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        binding.galleryButton.setOnClickListener( v -> {
+            startActivity(new Intent(this, GalleryActivity.class));
 
+                });
 
 
         binding.quizButton.setOnClickListener( v -> {

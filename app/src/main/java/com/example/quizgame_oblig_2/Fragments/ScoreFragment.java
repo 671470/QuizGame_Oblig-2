@@ -1,6 +1,5 @@
-package com.example.quizgame_oblig_2;
+package com.example.quizgame_oblig_2.Fragments;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +9,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.quizgame_oblig_2.databinding.FragmentQuizBinding;
+import com.example.quizgame_oblig_2.ViewModel.QuizViewModel;
 import com.example.quizgame_oblig_2.databinding.FragmentScoreBinding;
-
-import java.util.List;
 
 public class ScoreFragment extends Fragment {
 

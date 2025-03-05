@@ -1,4 +1,4 @@
-package com.example.quizgame_oblig_2;
+package com.example.quizgame_oblig_2.Fragments;
 
 import android.os.Bundle;
 
@@ -10,12 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.quizgame_oblig_2.ViewModel.QuizViewModel;
 import com.example.quizgame_oblig_2.databinding.FragmentResultBinding;
 
 
 public class ResultFragment extends Fragment {
 
- private QuizViewModel  viewModel;
+ private QuizViewModel viewModel;
  private FragmentResultBinding binding;
 
 

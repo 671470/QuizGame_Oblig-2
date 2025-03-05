@@ -1,12 +1,10 @@
-package com.example.quizgame_oblig_2;
+package com.example.quizgame_oblig_2.ViewModel;
 
 import android.content.Context;
 
-import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.sqlite.db.SupportSQLiteDatabase;
 
 @Database(entities = {Quiz.class}, version = 1)
 public abstract class QuizRoomDatabase extends RoomDatabase {

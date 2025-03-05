@@ -1,4 +1,4 @@
-package com.example.quizgame_oblig_2;
+package com.example.quizgame_oblig_2.Activites;
 
 import android.os.Bundle;
 import android.view.View;
@@ -13,8 +13,12 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 
+import com.example.quizgame_oblig_2.Fragments.ButtonFragment;
+import com.example.quizgame_oblig_2.Fragments.PictureFragment;
+import com.example.quizgame_oblig_2.ViewModel.QuizViewModel;
+import com.example.quizgame_oblig_2.Fragments.ResultFragment;
+import com.example.quizgame_oblig_2.Fragments.ScoreFragment;
 import com.example.quizgame_oblig_2.databinding.ActivityQuizBinding;
-import com.google.android.material.color.utilities.Score;
 
 public class QuizActivity extends AppCompatActivity {
 

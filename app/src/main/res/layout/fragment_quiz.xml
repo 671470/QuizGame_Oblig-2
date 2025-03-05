@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="350dp"
 
-    tools:context=".PictureFragment">
+    tools:context=".Fragments.PictureFragment">
 
     <ImageView
         android:id="@+id/imageView2"

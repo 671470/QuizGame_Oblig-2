@@ -13,7 +13,7 @@
         android:theme="@style/Theme.QuizGame_Oblig2"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".Activites.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,10 +21,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".QuizActivity"
+        <activity android:name=".Activites.QuizActivity"
             android:exported="true"
             />
-
+        <activity android:name=".Activites.GalleryActivity"
+            android:exported="true"
+            />
     </application>
 
 </manifest>

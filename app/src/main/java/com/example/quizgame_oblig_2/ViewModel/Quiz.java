@@ -1,4 +1,4 @@
-package com.example.quizgame_oblig_2;
+package com.example.quizgame_oblig_2.ViewModel;
 
 
 import androidx.annotation.NonNull;
@@ -8,8 +8,6 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "quiz_table")
 public class Quiz {
-
-
 
     @PrimaryKey
     @NonNull
@@ -29,21 +27,6 @@ public class Quiz {
         this.altAnswer2 = altAnswer2;
     }
 
-    public void setPicture(@NonNull String picture) {
-        this.picture = picture;
-    }
-
-    public void setRightAnswer(String rightAnswer) {
-        this.rightAnswer = rightAnswer;
-    }
-
-    public void setAltAnswer1(String altAnswer1) {
-        this.altAnswer1 = altAnswer1;
-    }
-
-    public void setAltAnswer2(String altAnswer2) {
-        this.altAnswer2 = altAnswer2;
-    }
 
     public String getPicture() {
         return picture;

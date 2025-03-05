@@ -1,4 +1,4 @@
-package com.example.quizgame_oblig_2;
+package com.example.quizgame_oblig_2.ViewModel;
 
 import android.app.Application;
 

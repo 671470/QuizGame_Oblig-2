@@ -1,6 +1,5 @@
-package com.example.quizgame_oblig_2;
+package com.example.quizgame_oblig_2.Fragments;
 
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.quizgame_oblig_2.Activites.QuizActivity;
+import com.example.quizgame_oblig_2.ViewModel.Quiz;
+import com.example.quizgame_oblig_2.ViewModel.QuizViewModel;
 import com.example.quizgame_oblig_2.databinding.FragmentButtonsBinding;
 
 import java.util.ArrayList;

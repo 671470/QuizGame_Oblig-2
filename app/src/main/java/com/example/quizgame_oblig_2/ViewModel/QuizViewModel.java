@@ -1,4 +1,4 @@
-package com.example.quizgame_oblig_2;
+package com.example.quizgame_oblig_2.ViewModel;
 
 import android.app.Application;
 import android.os.Handler;
@@ -15,6 +15,7 @@ import androidx.lifecycle.Transformations;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -23,6 +24,10 @@ import java.util.ArrayList;
 
 public class QuizViewModel extends AndroidViewModel {
     private final LiveData<List<Quiz>> allQuizzes;
+
+    private final LiveData<List<Quiz>> galleryQuizzes;
+    private final MutableLiveData<List<Quiz>> _allQuizzes = new MutableLiveData<>();
+
     private final MutableLiveData<List<Quiz>> _shuffledQuizzes = new MutableLiveData<>();
     private final LiveData<List<Quiz>> shuffledQuizzes;
     private final MutableLiveData<Integer> _score = new MutableLiveData<>(0);
@@ -49,8 +54,18 @@ public class QuizViewModel extends AndroidViewModel {
     public QuizViewModel(Application application, SavedStateHandle savedStateHandle) {
         super(application);
         QuizRepository repository = new QuizRepository(application);
-        allQuizzes = repository.getAllQuizzes();
         this.handle = savedStateHandle;
+
+
+        allQuizzes = repository.getAllQuizzes();
+
+        galleryQuizzes = Transformations.switchMap(allQuizzes, quizzes -> {
+            if (quizzes != null && !quizzes.isEmpty()) {
+                List<Quiz> shuffledList = new ArrayList<>(quizzes);
+                _allQuizzes.setValue(shuffledList);
+            }
+            return _allQuizzes;
+                });
 
         shuffledQuizzes = Transformations.switchMap(allQuizzes, quizzes -> {
 
@@ -61,6 +76,25 @@ public class QuizViewModel extends AndroidViewModel {
             }
             return _shuffledQuizzes;
         });
+    }
+    public LiveData<List<Quiz>> getGalleryQuizzes(){
+        return galleryQuizzes;
+    }
+
+    public void sortZtoA(){
+        List<Quiz> newQuiz = allQuizzes.getValue();
+        newQuiz.sort(Comparator.comparing(Quiz::getAltAnswer1).reversed());
+        _allQuizzes.setValue(newQuiz);
+    }
+
+    public void sortAtoZ(){
+        List<Quiz> newQuiz = allQuizzes.getValue();
+        newQuiz.sort(Comparator.comparing(Quiz::getAltAnswer1));
+        _allQuizzes.setValue(newQuiz);
+    }
+
+    public LiveData<List<Quiz>> getAllQuizzes() {
+        return allQuizzes;
     }
     public LiveData<Integer> getScore() {
         return score;

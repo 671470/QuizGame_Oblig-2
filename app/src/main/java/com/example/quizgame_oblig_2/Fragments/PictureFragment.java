@@ -1,4 +1,4 @@
-package com.example.quizgame_oblig_2;
+package com.example.quizgame_oblig_2.Fragments;
 
 import android.os.Bundle;
 import android.net.Uri;
@@ -6,15 +6,13 @@ import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.Observer;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.quizgame_oblig_2.ViewModel.QuizViewModel;
 import com.example.quizgame_oblig_2.databinding.FragmentQuizBinding;
-
-import java.util.List;
 
 public class PictureFragment extends Fragment {
 
