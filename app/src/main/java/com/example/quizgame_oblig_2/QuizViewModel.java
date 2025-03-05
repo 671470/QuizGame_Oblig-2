@@ -36,6 +36,15 @@ public class QuizViewModel extends AndroidViewModel {
 
     private SavedStateHandle handle;
     private boolean shuffledAnswers = false;
+    private boolean newQuiz = false;
+
+    public boolean isNewQuiz() {
+        return newQuiz;
+    }
+
+    public void setNewQuiz(boolean newQuiz) {
+        this.newQuiz = newQuiz;
+    }
 
     public QuizViewModel(Application application, SavedStateHandle savedStateHandle) {
         super(application);
@@ -44,13 +53,13 @@ public class QuizViewModel extends AndroidViewModel {
         this.handle = savedStateHandle;
 
         shuffledQuizzes = Transformations.switchMap(allQuizzes, quizzes -> {
-            MutableLiveData<List<Quiz>> shuffledLiveData = new MutableLiveData<>();
+
             if (quizzes != null && !quizzes.isEmpty()) {
                 List<Quiz> shuffledList = new ArrayList<>(quizzes);
                 Collections.shuffle(shuffledList);
-                shuffledLiveData.setValue(shuffledList);
+                _shuffledQuizzes.setValue(shuffledList);
             }
-            return shuffledLiveData;
+            return _shuffledQuizzes;
         });
     }
     public LiveData<Integer> getScore() {
@@ -65,6 +74,7 @@ public class QuizViewModel extends AndroidViewModel {
         newQuiz.remove(0);
         _shuffledQuizzes.setValue(newQuiz);
 
+
     }
 
 
@@ -78,28 +88,31 @@ public class QuizViewModel extends AndroidViewModel {
             _totalTries.setValue(_totalTries.getValue() + 1);
         }
     }
-    public void delayAfterAnswer(){
+    public void delayAfterAnswer(List<String> buttons){
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                shuffledAnswers = false;
+                setNewQuiz(true);
+                removeButtonColor(buttons);
                 goToNextQuiz();
+
             }
-    }, 2000);
+    }, 1200);
         }
 
     public ArrayList<String> getAnswers(){
 
-        if(!shuffledAnswers && shuffledQuizzes.getValue() != null && !shuffledQuizzes.getValue().isEmpty()) {
+        if(!shuffledAnswers) {
             ArrayList<String> answers = new ArrayList<>(Arrays.asList(
                     shuffledQuizzes.getValue().get(0).getAltAnswer1(),
                     shuffledQuizzes.getValue().get(0).getAltAnswer2(),
                     shuffledQuizzes.getValue().get(0).getRightAnswer()
             ));
-
             Collections.shuffle(answers);
 
-            this.shuffledAnswers = true;
+            shuffledAnswers = true;
             this.answers = answers;
         }
         return answers;
@@ -109,11 +122,15 @@ public class QuizViewModel extends AndroidViewModel {
     public LiveData<List<Quiz>> getShuffledQuizzes() {
         return shuffledQuizzes;
     }
-    public void saveButtonColor(String buttonKey, int color) {
+    public void saveButtonColor(String buttonKey, String color) {
         handle.set(buttonKey, color);
     }
 
-    public Integer getButtonColor(String buttonKey) {
+    public String getButtonColor(String buttonKey) {
         return handle.get(buttonKey);
+    }
+
+    public void removeButtonColor(List<String> buttonKey) {
+        buttonKey.forEach(v -> handle.remove(v));
     }
 }
