@@ -27,6 +27,10 @@
         <activity android:name=".Activites.GalleryActivity"
             android:exported="true"
             />
+        <activity android:name=".Activites.NewQuizActivity"
+            android:exported="true"
+            />
     </application>
+
 
 </manifest>

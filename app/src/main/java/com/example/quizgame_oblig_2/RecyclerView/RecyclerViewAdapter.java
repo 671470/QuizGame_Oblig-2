@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -51,25 +52,27 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
-        ImageButton removeButton;
+        Button deleteButton;
         TextView name, wrongAnswer1, wrongAnswer2;
 
         public MyViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
 
             imageView = itemView.findViewById(R.id.picture);
-
+            deleteButton = itemView.findViewById(R.id.deleteButton);
             name = itemView.findViewById(R.id.Name);
             wrongAnswer1 = itemView.findViewById(R.id.altAnswer1);
             wrongAnswer2 = itemView.findViewById(R.id.altAnswer2);
-//            removeButton.setOnClickListener(v-> {
-//                if(recyclerViewInterface != null) {
-//                    int pos = getAdapterPosition();
-//                    if(pos != RecyclerView.NO_POSITION){
-//                        recyclerViewInterface.deleteQuiz(pos);
-//                    }
-//                }
-//            });
-        }
-    }
+
+            deleteButton.setOnClickListener(v -> {
+                if (recyclerViewInterface != null) {
+                    int pos = getAdapterPosition();
+                    if (pos != RecyclerView.NO_POSITION) {
+                        recyclerViewInterface.deleteQuiz(pos);
+                    }
+
+
+                }
+            });
+        }}
 }

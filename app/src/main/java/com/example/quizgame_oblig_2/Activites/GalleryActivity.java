@@ -1,10 +1,14 @@
 package com.example.quizgame_oblig_2.Activites;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -16,12 +20,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.quizgame_oblig_2.R;
 import com.example.quizgame_oblig_2.RecyclerView.RecyclerViewAdapter;
 import com.example.quizgame_oblig_2.RecyclerView.RecyclerViewInterface;
+import com.example.quizgame_oblig_2.ViewModel.Quiz;
 import com.example.quizgame_oblig_2.ViewModel.QuizViewModel;
 import com.example.quizgame_oblig_2.databinding.ActivityGalleryBinding;
 import com.example.quizgame_oblig_2.databinding.ActivityMainBinding;
 
 public class GalleryActivity extends AppCompatActivity implements RecyclerViewInterface{
 
+    private ActivityResultLauncher<Intent> launcher;
     private QuizViewModel viewModel;
     private ActivityGalleryBinding binding;
     private RecyclerViewAdapter adapter;
@@ -52,6 +58,26 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewIn
 
         });
 
+        launcher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if(result.getResultCode() == RESULT_OK && result.getData() != null){
+                        Intent data = result.getData();
+                        Uri imageUri = data.getData();
+
+                        getContentResolver().takePersistableUriPermission(
+                                imageUri,
+                                Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                        );
+
+                        Intent intent = new Intent(this, NewQuizActivity.class);
+                        intent.putExtra("imageUri", imageUri.toString());
+                        startActivity(intent);
+                    }
+                }
+        );
+
+
         binding.sortAZButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,15 +91,33 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewIn
             }
         });
 
+        binding.galleryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openPhoneGallery();
+
+            }
+
+        });
+
+
     }
-
-
-
     @Override
     public void deleteQuiz(int pos) {
+        Quiz quiz = viewModel.getGalleryQuizzes().getValue().get(pos);
+       viewModel.deleteQuiz(quiz);
+    }
+
+    public void openPhoneGallery(){
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("image/*");
+        launcher.launch(intent);
 
     }
-//    // Opens the camera
+
+
+    // Opens the camera
 //    public void cameraButton(View v){
 //        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 //        startActivityForResult(intent, PICTURE_REQUEST_CODE);
@@ -86,8 +130,8 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewIn
 //        startActivityForResult(intent, REQUEST_CODE);
 //
 //    }
-//    // Handles the result from the camera and gallery
-//    @Override
+    // Handles the result from the camera and gallery
+
 //    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
 //        super.onActivityResult(requestCode, resultCode, data);
 //
@@ -114,30 +158,5 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewIn
 //            }
 //        }
 //    }
-//    //Sorts the gallery based upon the boolean sort variable
-//    public void sortGallery(){
-//        if(!sorted) {
-//            quizModels.sort(Comparator.comparing(QuizModel::getCorrectAnswer));
-//            sorted = true;
-//            sortButton.setImageResource(R.drawable.a_z);
-//
-//        } else {
-//            quizModels.sort(Comparator.comparing(QuizModel::getCorrectAnswer, Comparator.reverseOrder()));
-//            sorted = false;
-//            sortButton.setImageResource(R.drawable.z_a);
-//
-//        }
-//        MyApplication app = (MyApplication) getApplication();
-//        app.setSorted(sorted);
-//        adapter.notifyDataSetChanged();
-//    }
-//    // Deletes a quiz from the RecycleView and the application state
-//    @Override
-//    public void deleteQuiz(int pos) {
-//        QuizModel quizModel = quizModels.get(pos);
-//        String name = quizModel.getCorrectAnswer();
-//        MyApplication app = (MyApplication) getApplication();
-//        app.removeQuiz(name);
-//        adapter.notifyItemRemoved(pos);
-//    }
+
 }

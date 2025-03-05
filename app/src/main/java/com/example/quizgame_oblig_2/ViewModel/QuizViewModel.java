@@ -42,7 +42,7 @@ public class QuizViewModel extends AndroidViewModel {
     private SavedStateHandle handle;
     private boolean shuffledAnswers = false;
     private boolean newQuiz = false;
-
+    private QuizRepository repository;
     public boolean isNewQuiz() {
         return newQuiz;
     }
@@ -53,9 +53,9 @@ public class QuizViewModel extends AndroidViewModel {
 
     public QuizViewModel(Application application, SavedStateHandle savedStateHandle) {
         super(application);
-        QuizRepository repository = new QuizRepository(application);
         this.handle = savedStateHandle;
 
+        repository = new QuizRepository(application);
 
         allQuizzes = repository.getAllQuizzes();
 
@@ -79,6 +79,14 @@ public class QuizViewModel extends AndroidViewModel {
     }
     public LiveData<List<Quiz>> getGalleryQuizzes(){
         return galleryQuizzes;
+    }
+
+    public void deleteQuiz(Quiz quiz){
+        repository.deleteQuiz(quiz);
+    }
+
+    public void addQuiz(Quiz quiz){
+        repository.insertQuiz(quiz);
     }
 
     public void sortZtoA(){
