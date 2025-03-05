@@ -21,6 +21,8 @@ public interface QuizDao {
     @Query("DELETE FROM quiz_table")
     void deleteAll();
 
+    @Query("SELECT COUNT(*) FROM quiz_table")
+    int getQuizCount();
 
 
 }

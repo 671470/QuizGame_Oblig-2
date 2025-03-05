@@ -33,7 +33,7 @@ public class ScoreFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = new ViewModelProvider(this).get(QuizViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity()).get(QuizViewModel.class);
 
 
 
@@ -43,8 +43,24 @@ public class ScoreFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
+
         binding = FragmentScoreBinding.inflate(inflater, container, false);
+
+
+        viewModel.getScore().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                binding.score.setText(String.valueOf(integer));
+            }
+        });
+        viewModel.getTotalTries().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                binding.totalScore.setText(String.valueOf(integer));
+            }
+        });
+
         return binding.getRoot();
     }
 }

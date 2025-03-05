@@ -16,6 +16,7 @@ public class QuizRepository {
     public QuizRepository(Application application){
         QuizRoomDatabase db;
         db = QuizRoomDatabase.getDatabase(application);
+
         quizDao = db.quizDao();
         allQuizzes = quizDao.getAllQuizzes();
 

@@ -2,6 +2,8 @@ package com.example.quizgame_oblig_2;
 
 import android.os.Bundle;
 import android.net.Uri;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.Observer;
@@ -26,33 +28,33 @@ public class PictureFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        viewModel = new ViewModelProvider(requireActivity()).get(QuizViewModel.class);
 
-
-        viewModel = new ViewModelProvider(this).get(QuizViewModel.class);
-
-
-        viewModel.observeQuizzes(this);
-
-        viewModel.getGameQuiz().observe(this, new Observer<List<Quiz>>() {
-            @Override
-            public void onChanged(List<Quiz> quizzes) {
-
-                if (quizzes != null && !quizzes.isEmpty()) {
-
-
-                    binding.imageView2.setImageURI(Uri.parse(quizzes.get(0).getPicture()));
-                }}
-
-        });
 
 
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         binding = FragmentQuizBinding.inflate(inflater, container, false);
+
+        viewModel.getShuffledQuizzes().observe(getViewLifecycleOwner(), quizzes -> {
+
+                binding.imageView2.setImageURI(Uri.parse(quizzes.get(0).getPicture()));
+
+        });
+
         return binding.getRoot();
     }
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
+
 }
+
+
