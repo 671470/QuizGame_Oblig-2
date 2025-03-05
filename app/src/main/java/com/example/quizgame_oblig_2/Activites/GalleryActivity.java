@@ -1,15 +1,19 @@
 package com.example.quizgame_oblig_2.Activites;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -24,6 +28,8 @@ import com.example.quizgame_oblig_2.ViewModel.Quiz;
 import com.example.quizgame_oblig_2.ViewModel.QuizViewModel;
 import com.example.quizgame_oblig_2.databinding.ActivityGalleryBinding;
 import com.example.quizgame_oblig_2.databinding.ActivityMainBinding;
+
+import java.io.File;
 
 public class GalleryActivity extends AppCompatActivity implements RecyclerViewInterface{
 
@@ -62,7 +68,9 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewIn
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if(result.getResultCode() == RESULT_OK && result.getData() != null){
+
                         Intent data = result.getData();
+
                         Uri imageUri = data.getData();
 
                         getContentResolver().takePersistableUriPermission(
@@ -74,6 +82,10 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewIn
                         intent.putExtra("imageUri", imageUri.toString());
                         startActivity(intent);
                     }
+
+
+
+
                 }
         );
 
@@ -99,6 +111,14 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewIn
             }
 
         });
+        binding.cameraButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openCamera();
+
+            }
+
+        });
 
 
     }
@@ -114,6 +134,29 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewIn
         intent.setType("image/*");
         launcher.launch(intent);
 
+    }
+
+
+    public void openCamera() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        // Create a temporary file in the external storage directory
+        File photoFile = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "temp_file_" + System.currentTimeMillis() + ".jpg");
+
+        // Get a content URI for the file
+        Uri photoURI = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", photoFile);
+
+        // Set the output location
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+
+        // Allow other apps to access the file temporarily
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+        try {
+            launcher.launch(intent);
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
 
