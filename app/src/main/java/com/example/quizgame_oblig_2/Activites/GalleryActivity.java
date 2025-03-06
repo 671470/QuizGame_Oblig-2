@@ -1,11 +1,13 @@
 package com.example.quizgame_oblig_2.Activites;
 
 import android.content.ActivityNotFoundException;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.view.View;
 
@@ -38,6 +40,8 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewIn
     private ActivityGalleryBinding binding;
     private RecyclerViewAdapter adapter;
 
+    private Uri cameraUri;
+
     // Sets up the RecycleView and loads sort attribute and quiz models from the application state
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +58,7 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewIn
             return insets;
         });
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = findViewById(binding.recyclerView.getId());
 
         viewModel.getGalleryQuizzes().observe(this, quizzes -> {
 
@@ -68,26 +72,29 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewIn
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if(result.getResultCode() == RESULT_OK && result.getData() != null){
-
                         Intent data = result.getData();
-
                         Uri imageUri = data.getData();
 
-                        getContentResolver().takePersistableUriPermission(
-                                imageUri,
-                                Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                        );
+                        if (imageUri != null) {
+                            getContentResolver().takePersistableUriPermission(
+                                    imageUri,
+                                    Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                            );
 
-                        Intent intent = new Intent(this, NewQuizActivity.class);
-                        intent.putExtra("imageUri", imageUri.toString());
-                        startActivity(intent);
+                            Intent intent = new Intent(this, NewQuizActivity.class);
+                            intent.putExtra("imageUri", imageUri.toString());
+                            startActivity(intent);
+                        } else {
+
+                            Intent intent = new Intent(this, NewQuizActivity.class);
+                            intent.putExtra("imageUri", cameraUri.toString());
+                            startActivity(intent);
+                        }
                     }
-
-
-
-
                 }
         );
+
+
 
 
         binding.sortAZButton.setOnClickListener(new View.OnClickListener() {
@@ -138,68 +145,17 @@ public class GalleryActivity extends AppCompatActivity implements RecyclerViewIn
 
 
     public void openCamera() {
+
+
+        File imageFile = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), SystemClock.currentThreadTimeMillis()+ "temp_image.jpg");
+        cameraUri = FileProvider.getUriForFile(this, getPackageName() + ".provider", imageFile);
+
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraUri);
 
-        // Create a temporary file in the external storage directory
-        File photoFile = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "temp_file_" + System.currentTimeMillis() + ".jpg");
 
-        // Get a content URI for the file
-        Uri photoURI = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", photoFile);
-
-        // Set the output location
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-
-        // Allow other apps to access the file temporarily
-        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-        try {
             launcher.launch(intent);
-        } catch (ActivityNotFoundException e) {
-            e.printStackTrace();
-        }
+
     }
-
-
-    // Opens the camera
-//    public void cameraButton(View v){
-//        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        startActivityForResult(intent, PICTURE_REQUEST_CODE);
-//    }
-//    // Opens the gallery
-//    public void openFile(View v){
-//        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-//        intent.addCategory(Intent.CATEGORY_OPENABLE);
-//        intent.setType("image/*");
-//        startActivityForResult(intent, REQUEST_CODE);
-//
-//    }
-    // Handles the result from the camera and gallery
-
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if(requestCode == REQUEST_CODE && resultCode == RESULT_OK){
-//            if(data != null){
-//                Uri imageUri = data.getData();
-//
-//                Intent intent = new Intent(this, NewQuizActivity.class);
-//                intent.putExtra("imageUri", imageUri);
-//                finish();
-//                startActivity(intent);
-//            }
-//        }
-//
-//        if(requestCode == PICTURE_REQUEST_CODE && resultCode == RESULT_OK){
-//            if(data != null) {
-//                Bundle extras = data.getExtras();
-//                Bitmap imageBitmap = (Bitmap) extras.get("data");
-//
-//                Intent intent = new Intent(this, NewQuizActivity.class);
-//                intent.putExtra("bitUri",imageBitmap);
-//                startActivity(intent);
-//                finish();
-//            }
-//        }
-//    }
 
 }
