@@ -1,5 +1,5 @@
 
-#Test cases
+# Test cases
 
 - **Button Navigation**: Clicking the quiz button in the main menu takes you to the right sub-activity (quiz activity)
 
