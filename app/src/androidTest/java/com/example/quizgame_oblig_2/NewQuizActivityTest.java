@@ -10,12 +10,9 @@ import static androidx.test.espresso.matcher.ViewMatchers.*;
 import static com.example.quizgame_oblig_2.RecyclerViewItemCountAssertion.withItemCount;
 import android.app.Activity;
 import android.app.Instrumentation;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.SystemClock;
-import androidx.test.core.app.ApplicationProvider;
+
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -41,7 +38,7 @@ public class NewQuizActivityTest {
     }
 
     @Test
-    public void testSelectImageFromGallery() {
+    public void addQuizTest() {
 
         Intent resultData = new Intent();
         Uri imageUri = Uri.parse("content://media/external/images/media/1");
