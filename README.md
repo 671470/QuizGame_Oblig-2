@@ -10,12 +10,11 @@
 - **QuizActivityTest**:
   - This test class checks if the score and total score are updated correctly when the user selects right or wrong answers
   - ActivityScenarioRule ensures that the test starts in the Quiz Activity
-  - CountingIdlingResourceis implemented because Espresso was pressing buttons too quickly and didn't wait for the UI to update
+  - CountingIdlingResourceis implemented because Espresso was pressing buttons too quickly and didn't wait for the UI to update because LiveData updates are delayed by 600ms after answering (handled in delayAfterAnswer).
   - CountingIdlingResource is incremented and decremented in the delayAfterAnswer() method in QuizViewModel to synchronize the UI updates
   - checkScoreUpdate() presses one wrong answer and one correct answer and checks if score and total score match. 
   - checkScoreUpdate2() presses one wrong answer and two correct answers and checks if score and total score match
-  - CountingIdlingResource was implemented because LiveData updates are delayed by 600ms after answering (handled in delayAfterAnswer).
-  - Had to change the way buttons are implented in ButtonFragment and assign the Button with the correct answer the tag ("Right Answser") and the two other Buttons ("Wrong answer 1") and ("Wrong answer 2")
+  - Had to change the way buttons are implented in ButtonFragment and assign the Button with the correct answer the tag ("Right answer") and the two other Buttons ("Wrong answer 1") and ("Wrong answer 2")
   - All test pass successfully
 
 - **GalleryActivity**: 
@@ -31,7 +30,7 @@
   - ActivityScenarioRule ensures that the test starts in the Gallery Activity
   - addQuizTest() first creates an intent stub that returns a URI and ACTION_OK when an intent with ACTION_OPEN_DOCUMENT is fired.
   - intending() returns the intent stub when the ACTION_OPEN_DOCUMENT is fired, simulating the intent interaction.
-  - The Espresso test presses the gallery button, fills in the three EditText fields, and finally submits the form. After submission, the test checks if the RecyclerView item count has been updated.
+  - The Espresso test presses the gallery button, which normally opens the gallery and gives the user an option to pick a picture, after picture is picked NewQuizActivity is started with results from the gallery. Instead new NewQuizActivity is started with data from the intent stub, then Espresso fills in the three EditText fields, and submits the form. After submission, the test checks if the RecyclerView item count has been updated.
   - A boolean flag SetTesting is set to true before the test starts to prevent certain lines in GalleryActivity from running: 
 ```java
 if (imageUri != null) {
