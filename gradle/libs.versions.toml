@@ -1,21 +1,43 @@
 [versions]
 agp = "8.8.0"
+androidxEspressoIdlingResource = "3.4.0"
+espressoIdlingResourceVersion = "3.4.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 appcompat = "1.7.0"
+lifecycleViewmodel = "2.8.7"
 material = "1.12.0"
 activity = "1.10.0"
 constraintlayout = "2.2.0"
+mockitoCore = "4.0.0"
+roomCompiler = "2.6.1"
+roomCommon = "2.6.1"
+rules = "1.6.1"
+espressoIdlingResource = "3.6.1"
+espressoContrib = "3.6.1"
 
 [libraries]
+android-espresso-idling-resource = { module = "com.android.support.test.espresso:espresso-idling-resource", version.ref = "espressoIdlingResourceVersion" }
+espresso-idling-resource-v340 = { module = "androidx.test.espresso:espresso-idling-resource", version.ref = "androidxEspressoIdlingResource" }
+espresso-intents = { module = "androidx.test.espresso:espresso-intents", version.ref = "espressoCore" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+lifecycle-livedata = { module = "androidx.lifecycle:lifecycle-livedata", version.ref = "lifecycleViewmodel" }
+lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel", version.ref = "lifecycleViewmodel" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+mockito-android = { module = "org.mockito:mockito-android", version.ref = "mockitoCore" }
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCore" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomCompiler" }
+room-common = { group = "androidx.room", name = "room-common", version.ref = "roomCommon" }
+rules = { module = "androidx.test:rules", version.ref = "rules" }
+espresso-idling-resource = { group = "androidx.test.espresso", name = "espresso-idling-resource", version.ref = "espressoIdlingResource" }
+espresso-contrib = { group = "androidx.test.espresso", name = "espresso-contrib", version.ref = "espressoContrib" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
