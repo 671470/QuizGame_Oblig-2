@@ -32,13 +32,17 @@
   - addQuizTest() first creates an intent stub that returns a URI and ACTION_OK when an intent with ACTION_OPEN_DOCUMENT is fired.
   - intending() returns the intent stub when the ACTION_OPEN_DOCUMENT is fired, simulating the intent interaction.
   - The Espresso test presses the gallery button, fills in the three EditText fields, and finally submits the form. After submission, the test checks if the RecyclerView item count has been updated.
-  - A boolean flag SetTesting is set to true before the test starts to prevent certain lines in GalleryActivity from running: if (imageUri != null) {
-                            if (!isTesting){
-                                getContentResolver().takePersistableUriPermission(
-                                        imageUri,
-                                        Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                                );
-                        }
+  - A boolean flag SetTesting is set to true before the test starts to prevent certain lines in GalleryActivity from running: 
+```java
+if (imageUri != null) {
+    if (!isTesting) {
+        getContentResolver().takePersistableUriPermission(
+            imageUri,
+            Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+        );
+    }
+}
+```
   - Couldn’t find a way to grant the URI_PERMISSION using the intent stub, which caused the test to fail when those lines were run. The test runs successfully without those lines executing.
   - The test passes successfully
 
