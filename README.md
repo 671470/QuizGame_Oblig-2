@@ -1,7 +1,7 @@
 
 # Test cases
 
-- **Note**: NewQuizActivity test fails when all tests are run at the same time, all tests pass successfully when ran one by one. 
+- **Note**: Some quizzes fail when all tests are ran at the same time (depending on the machine), all tests pass successfully when ran one by one. 
 
 - **MainActivityTest**: 
   - This test checks if the quiz button on the Main Activity works correctly 
