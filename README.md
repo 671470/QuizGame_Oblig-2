@@ -1,6 +1,8 @@
 
 # Test cases
 
+- **Note**: NewQuizActivity test fails when all tests are run at the same time, all tests pass successfully when ran one by one. 
+
 - **MainActivityTest**: 
   - This test checks if the quiz button on the Main Activity works correctly 
   - ActivityScenarioRule ensures that the test starts in the Main Activity

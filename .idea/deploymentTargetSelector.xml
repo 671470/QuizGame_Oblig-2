@@ -14,7 +14,7 @@
       <SelectionState runConfigName="QuizActivityTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="MainActivity">
+      <SelectionState runConfigName="Tests in 'com.example.quizgame_oblig_2'">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
