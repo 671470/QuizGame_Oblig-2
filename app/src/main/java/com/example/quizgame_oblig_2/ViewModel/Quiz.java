@@ -8,7 +8,6 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "quiz_table")
 public class Quiz {
-
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = "picture")
@@ -27,19 +26,16 @@ public class Quiz {
         this.altAnswer2 = altAnswer2;
     }
 
-
+    @NonNull
     public String getPicture() {
         return picture;
     }
-
     public String getRightAnswer() {
         return rightAnswer;
     }
-
     public String getAltAnswer1() {
         return altAnswer1;
     }
-
     public String getAltAnswer2() {
         return altAnswer2;
     }

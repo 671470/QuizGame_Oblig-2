@@ -11,18 +11,13 @@ import java.util.List;
 public interface QuizDao {
     @Query("SELECT * FROM quiz_table")
     LiveData<List<Quiz>>getAllQuizzes();
-
     @Insert
     void insertQuiz(Quiz quiz);
-
     @Delete
     void deleteQuiz(Quiz quiz);
-
     @Query("DELETE FROM quiz_table")
     void deleteAll();
-
     @Query("SELECT COUNT(*) FROM quiz_table")
     int getQuizCount();
-
 
 }

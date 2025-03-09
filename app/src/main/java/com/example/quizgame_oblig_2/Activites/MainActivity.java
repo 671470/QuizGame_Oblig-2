@@ -31,18 +31,8 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        binding.galleryButton.setOnClickListener( v -> {
-            startActivity(new Intent(this, GalleryActivity.class));
-
-                });
-
-
-        binding.quizButton.setOnClickListener( v -> {
-
-
-            startActivity(new Intent(this, QuizActivity.class));
-
-        });
+        binding.galleryButton.setOnClickListener( v -> startActivity(new Intent(this, GalleryActivity.class)));
+        binding.quizButton.setOnClickListener( v -> startActivity(new Intent(this, QuizActivity.class)));
 
     }
 }

@@ -23,11 +23,9 @@ public abstract class QuizRoomDatabase extends RoomDatabase {
                             )
                             .createFromAsset("database/quiz.db")
                             .build();
-
                 }
             }
         }
-
         return INSTANCE;
     }
 

@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.Transformations;
+import androidx.test.espresso.idling.CountingIdlingResource;
 
 
 import java.util.Arrays;
@@ -20,43 +21,34 @@ import java.util.List;
 
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 public class QuizViewModel extends AndroidViewModel {
     private final LiveData<List<Quiz>> allQuizzes;
-
     private final LiveData<List<Quiz>> galleryQuizzes;
     private final MutableLiveData<List<Quiz>> _allQuizzes = new MutableLiveData<>();
-
     private final MutableLiveData<List<Quiz>> _shuffledQuizzes = new MutableLiveData<>();
     private final LiveData<List<Quiz>> shuffledQuizzes;
     private final MutableLiveData<Integer> _score = new MutableLiveData<>(0);
     private final LiveData<Integer> score = _score;
-
     private final MutableLiveData<Integer> _totalTries = new MutableLiveData<>(0);
     private final LiveData<Integer> totalTries = _totalTries;
-
-
     private  ArrayList<String> answers;
-
-    private SavedStateHandle handle;
+    private final SavedStateHandle handle;
     private boolean shuffledAnswers = false;
-    private boolean newQuiz = false;
-    private QuizRepository repository;
-    public boolean isNewQuiz() {
-        return newQuiz;
-    }
+    private final QuizRepository repository;
+    private final CountingIdlingResource mIdlingResource = new CountingIdlingResource("quizIdlingResource");
 
-    public void setNewQuiz(boolean newQuiz) {
-        this.newQuiz = newQuiz;
+    public CountingIdlingResource getIdlingResource() {
+        return mIdlingResource;
     }
 
     public QuizViewModel(Application application, SavedStateHandle savedStateHandle) {
         super(application);
+
         this.handle = savedStateHandle;
-
         repository = new QuizRepository(application);
-
         allQuizzes = repository.getAllQuizzes();
 
         galleryQuizzes = Transformations.switchMap(allQuizzes, quizzes -> {
@@ -68,7 +60,6 @@ public class QuizViewModel extends AndroidViewModel {
                 });
 
         shuffledQuizzes = Transformations.switchMap(allQuizzes, quizzes -> {
-
             if (quizzes != null && !quizzes.isEmpty()) {
                 List<Quiz> shuffledList = new ArrayList<>(quizzes);
                 Collections.shuffle(shuffledList);
@@ -80,46 +71,33 @@ public class QuizViewModel extends AndroidViewModel {
     public LiveData<List<Quiz>> getGalleryQuizzes(){
         return galleryQuizzes;
     }
-
-    public void deleteQuiz(Quiz quiz){
-        repository.deleteQuiz(quiz);
-    }
-
-    public void addQuiz(Quiz quiz){
-        repository.insertQuiz(quiz);
-    }
+    public void deleteQuiz(Quiz quiz){ repository.deleteQuiz(quiz); }
+    public void addQuiz(Quiz quiz){ repository.insertQuiz(quiz); }
 
     public void sortZtoA(){
         List<Quiz> newQuiz = allQuizzes.getValue();
-        newQuiz.sort(Comparator.comparing(Quiz::getAltAnswer1).reversed());
+        assert newQuiz != null;
+        newQuiz.sort(Comparator.comparing(Quiz::getRightAnswer).reversed());
         _allQuizzes.setValue(newQuiz);
     }
-
     public void sortAtoZ(){
         List<Quiz> newQuiz = allQuizzes.getValue();
-        newQuiz.sort(Comparator.comparing(Quiz::getAltAnswer1));
+        assert newQuiz != null;
+        newQuiz.sort(Comparator.comparing(Quiz::getRightAnswer));
         _allQuizzes.setValue(newQuiz);
-    }
-
-    public LiveData<List<Quiz>> getAllQuizzes() {
-        return allQuizzes;
     }
     public LiveData<Integer> getScore() {
         return score;
     }
-
     public LiveData<Integer> getTotalTries() {
         return totalTries;
     }
     public void goToNextQuiz(){
         List<Quiz> newQuiz = shuffledQuizzes.getValue();
+        assert newQuiz != null;
         newQuiz.remove(0);
         _shuffledQuizzes.setValue(newQuiz);
-
-
     }
-
-
     public void incrementScore() {
         if(_score.getValue() != null) {
             _score.setValue(_score.getValue() + 1);
@@ -131,34 +109,29 @@ public class QuizViewModel extends AndroidViewModel {
         }
     }
     public void delayAfterAnswer(List<String> buttons){
+        mIdlingResource.increment();
         Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                shuffledAnswers = false;
-                setNewQuiz(true);
-                removeButtonColor(buttons);
-                goToNextQuiz();
-
-            }
-    }, 1200);
+        handler.postDelayed(() -> {
+            shuffledAnswers = false;
+            removeButtonColor(buttons);
+            goToNextQuiz();
+            mIdlingResource.decrement();
+        }, 600);
         }
 
     public ArrayList<String> getAnswers(){
-
         if(!shuffledAnswers) {
             ArrayList<String> answers = new ArrayList<>(Arrays.asList(
-                    shuffledQuizzes.getValue().get(0).getAltAnswer1(),
-                    shuffledQuizzes.getValue().get(0).getAltAnswer2(),
-                    shuffledQuizzes.getValue().get(0).getRightAnswer()
+                    Objects.requireNonNull(
+                            shuffledQuizzes.getValue()).get(0).getAltAnswer1(),
+                            shuffledQuizzes.getValue().get(0).getAltAnswer2(),
+                            shuffledQuizzes.getValue().get(0).getRightAnswer()
             ));
             Collections.shuffle(answers);
-
             shuffledAnswers = true;
             this.answers = answers;
         }
         return answers;
-
     }
 
     public LiveData<List<Quiz>> getShuffledQuizzes() {
@@ -167,12 +140,10 @@ public class QuizViewModel extends AndroidViewModel {
     public void saveButtonColor(String buttonKey, String color) {
         handle.set(buttonKey, color);
     }
-
     public String getButtonColor(String buttonKey) {
         return handle.get(buttonKey);
     }
-
     public void removeButtonColor(List<String> buttonKey) {
-        buttonKey.forEach(v -> handle.remove(v));
+        buttonKey.forEach(handle::remove);
     }
 }

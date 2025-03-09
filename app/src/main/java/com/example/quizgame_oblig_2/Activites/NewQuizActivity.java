@@ -1,6 +1,5 @@
 package com.example.quizgame_oblig_2.Activites;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -15,7 +14,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.quizgame_oblig_2.ViewModel.Quiz;
 import com.example.quizgame_oblig_2.ViewModel.QuizViewModel;
-import com.example.quizgame_oblig_2.databinding.ActivityGalleryBinding;
 import com.example.quizgame_oblig_2.databinding.ActivityNewQuizBinding;
 
 public class NewQuizActivity extends AppCompatActivity {
@@ -28,11 +26,10 @@ public class NewQuizActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-
-        viewModel = new ViewModelProvider(this).get(QuizViewModel.class);
-
         binding = ActivityNewQuizBinding.inflate(getLayoutInflater());
+        viewModel = new ViewModelProvider(this).get(QuizViewModel.class);
         View view = binding.getRoot();
+
         setContentView(view);
         ViewCompat.setOnApplyWindowInsetsListener(binding.newQuiz, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -44,41 +41,33 @@ public class NewQuizActivity extends AppCompatActivity {
         Uri imageUri = Uri.parse(image);
         binding.quizPicture.setImageURI(imageUri);
 
-        binding.button.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                submitButton();
-            }
-        });
+        binding.submitButton.setOnClickListener(v -> submitButton());
 
     }
-    public void submitButton() {
-        EditText name = findViewById(binding.correctAnswer.getId());
+
+    private void submitButton() {
+        EditText rightAns = findViewById(binding.correctAnswer.getId());
         EditText alt1 = findViewById(binding.alt1.getId());
         EditText alt2 = findViewById(binding.alt2.getId());
 
-        String correctName = name.getText().toString();
-        String alternative1 = alt1.getText().toString();
-        String alternative2 = alt2.getText().toString();
+        String rightAnswer = rightAns.getText().toString();
+        String altAnswer1 = alt1.getText().toString();
+        String altAnswer2 = alt2.getText().toString();
 
-
-        if (correctName.isEmpty()) {
-            name.setError("This field is required");
+        if (rightAnswer.isEmpty()) {
+            rightAns.setError("This field is required");
         }
-        if (alternative1.isEmpty()) {
+        if (altAnswer1.isEmpty()) {
             alt1.setError("This field is required");
         }
-        if (alternative2.isEmpty()) {
+        if (altAnswer2.isEmpty()) {
             alt2.setError("This field is required");
         }
 
-        if (!(correctName.isEmpty() || alternative1.isEmpty() || alternative2.isEmpty())) {
-           Quiz newQuiz;
-
-                newQuiz= new Quiz(image, correctName, alternative1, alternative2);
-                viewModel.addQuiz(newQuiz);
-
+        if (!(rightAnswer.isEmpty() || altAnswer1.isEmpty() || altAnswer2.isEmpty()))
+        {
+            Quiz newQuiz= new Quiz(image, rightAnswer, altAnswer1, altAnswer2);
+            viewModel.addQuiz(newQuiz);
             finish();
         }
     }

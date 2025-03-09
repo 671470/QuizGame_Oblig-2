@@ -15,21 +15,16 @@ import com.example.quizgame_oblig_2.ViewModel.QuizViewModel;
 import com.example.quizgame_oblig_2.databinding.FragmentQuizBinding;
 
 public class PictureFragment extends Fragment {
-
     private QuizViewModel viewModel;
     private FragmentQuizBinding binding;
 
     public PictureFragment() {
-
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(QuizViewModel.class);
-
-
-
     }
 
     @Override
@@ -37,15 +32,9 @@ public class PictureFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentQuizBinding.inflate(inflater, container, false);
 
-        viewModel.getShuffledQuizzes().observe(getViewLifecycleOwner(), quizzes -> {
-
-                binding.imageView2.setImageURI(Uri.parse(quizzes.get(0).getPicture()));
-
-        });
-
+        viewModel.getShuffledQuizzes().observe(getViewLifecycleOwner(), quizzes -> binding.imageView2.setImageURI(Uri.parse(quizzes.get(0).getPicture())));
         return binding.getRoot();
     }
-
 
     @Override
     public void onDestroyView() {

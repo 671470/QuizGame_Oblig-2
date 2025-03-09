@@ -9,17 +9,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class QuizRepository {
-
-
     private final QuizDao quizDao;
     private final LiveData<List<Quiz>> allQuizzes;
     public QuizRepository(Application application){
         QuizRoomDatabase db;
         db = QuizRoomDatabase.getDatabase(application);
-
         quizDao = db.quizDao();
         allQuizzes = quizDao.getAllQuizzes();
-
     }
     public void deleteQuiz(Quiz quiz){
         ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -36,8 +32,5 @@ public class QuizRepository {
         executor.submit(quizDao::deleteAll);
         executor.shutdown();
     }
-
     public LiveData<List<Quiz>> getAllQuizzes() {return allQuizzes;}
-
-
 }

@@ -10,12 +10,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
 
 
 import com.example.quizgame_oblig_2.Fragments.ButtonFragment;
 import com.example.quizgame_oblig_2.Fragments.PictureFragment;
-import com.example.quizgame_oblig_2.ViewModel.QuizViewModel;
 import com.example.quizgame_oblig_2.Fragments.ResultFragment;
 import com.example.quizgame_oblig_2.Fragments.ScoreFragment;
 import com.example.quizgame_oblig_2.databinding.ActivityQuizBinding;
@@ -23,35 +21,14 @@ import com.example.quizgame_oblig_2.databinding.ActivityQuizBinding;
 public class QuizActivity extends AppCompatActivity {
 
     private ActivityQuizBinding binding;
-    private QuizViewModel viewModel;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-
         binding = ActivityQuizBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
-
-        viewModel = new ViewModelProvider(this).get(QuizViewModel.class);
         setContentView(view);
-
-        if(savedInstanceState == null) {
-            FragmentManager fm = getSupportFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-
-
-            ft.add(binding.pictureFragment.getId(), new PictureFragment());
-            ft.add(binding.buttonFragment.getId(), new ButtonFragment());
-            ft.add(binding.scoreFragment.getId(), new ScoreFragment());
-
-            ft.commit();
-
-        }
-
-
-
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.main, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -59,9 +36,16 @@ public class QuizActivity extends AppCompatActivity {
             return insets;
         });
 
+        if(savedInstanceState == null) {
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
 
+            ft.add(binding.pictureFragment.getId(), new PictureFragment());
+            ft.add(binding.buttonFragment.getId(), new ButtonFragment());
+            ft.add(binding.scoreFragment.getId(), new ScoreFragment());
 
-
+            ft.commit();
+        }
     }
     public void getResultScreen(){
         FragmentManager fm = getSupportFragmentManager();
@@ -80,6 +64,5 @@ public class QuizActivity extends AppCompatActivity {
 
             ft.commit();
         }
-
     }
 }

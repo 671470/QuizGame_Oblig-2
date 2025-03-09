@@ -2,6 +2,7 @@ package com.example.quizgame_oblig_2.Fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -19,11 +20,8 @@ public class ResultFragment extends Fragment {
  private QuizViewModel viewModel;
  private FragmentResultBinding binding;
 
-
     public ResultFragment() {
-
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,23 +30,12 @@ public class ResultFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         binding = FragmentResultBinding.inflate(inflater, container, false);
 
-        viewModel.getScore().observe(getViewLifecycleOwner(), new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                binding.score.setText(String.valueOf(integer));
-            }
-        });
-        viewModel.getTotalTries().observe(getViewLifecycleOwner(), new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                binding.total.setText(String.valueOf(integer));
-            }
-        });
+        viewModel.getScore().observe(getViewLifecycleOwner(), integer -> binding.score.setText(String.valueOf(integer)));
+        viewModel.getTotalTries().observe(getViewLifecycleOwner(), integer -> binding.totalScore.setText(String.valueOf(integer)));
 
         return binding.getRoot();
     }
